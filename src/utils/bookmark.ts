@@ -33,7 +33,7 @@ export function parseBookmark(htmlStr: string) {
 
   function findA(node: Element) {
     let a = node.firstElementChild
-    if (!a && a.nodeName === 'a') return
+    if (!a && a.nodeName !== 'a') return
 
     hasNoCate = true
     const name = a.textContent
@@ -60,11 +60,17 @@ export function parseBookmark(htmlStr: string) {
       const iItem = roolDL.childNodes[i] as any
       if (iItem && iItem.nodeName === 'DT') {
         findA(iItem)
-        const titleEl = iItem.querySelector('h3')
-        if (!titleEl) continue
+        const titleEl = iItem.querySelector('h3') as Element
+        // PERSONAL_TOOLBAR_FOLDER 收藏栏
+        if (
+          !titleEl ||
+          titleEl.getAttribute('personal_toolbar_folder') ||
+          titleEl.getAttribute('PERSONAL_TOOLBAR_FOLDER')
+        ) continue
+
         ii++
         const title = titleEl.textContent
-        const createdAt = new Date(titleEl.getAttribute('add_date') * 1000).toISOString()
+        const createdAt = new Date(Number(titleEl.getAttribute('add_date')) * 1000).toISOString()
         data.push({
           title,
           createdAt,
