@@ -8,7 +8,7 @@ const c: IConfig = {
   branch: 'own',
 
   // 路由是否Hash模式, 如果是部署在github pages 务必设为 true
-  hashMode: true,
+  hashMode: false,
 
   // 是否显示右上角的 Github 图标
   showGithub: true,
